@@ -1,4 +1,3 @@
-
 var JSXGen = JSXGen || {};
 
 /**
@@ -24,14 +23,14 @@ var JSXGen = {
   getParams: function () {
     var index = document.URL.indexOf('?');
     var paramString = document.URL.substring(index + 1, document.URL.length);
-    paramString = unescape(paramString);
+    paramString = decodeURI(paramString);
 
     var params = [];
 
     if (index !== -1) {
       var pairs = paramString.split('&');
       for (var i = 0; i < pairs.length; i++) {
-        nameVal = pairs[i].split('=');
+        var nameVal = pairs[i].split('=');
         params.push(new this.Parameter(nameVal[0], nameVal[1]));
       }
     }
@@ -134,7 +133,7 @@ var JSXGen = {
 
       this.generate = function () {
         if (!JSXGen.localOptions.point.showInfobox)
-          this.obj = JSXGen.elements.board.create('point', [coords[0], coords[1]], { showInfobox: false });
+          this.obj = JSXGen.elements.board.create('point', [coords[0], coords[1]], {showInfobox: false});
         else this.obj = JSXGen.elements.board.create('point', [coords[0], coords[1]]);
       };
     },
@@ -170,7 +169,9 @@ var JSXGen = {
         var color = JSXGen.elements._colors[0] || 'blue';
         JSXGen.elements._colors.shift();
         var def = this.definition;
-        this.obj = JSXGen.elements.board.create('functiongraph', [function (x) { return eval(def); }], { strokeColor: color });
+        this.obj = JSXGen.elements.board.create('functiongraph', [function (x) {
+          return eval(def);
+        }], {strokeColor: color});
       };
     }
   }

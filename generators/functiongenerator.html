@@ -14,32 +14,30 @@
 </head>
 <body>
 <div id="box" class="jxgbox"></div>
-<script src="jsxgen_old.js"></script>
+<script src="../script/jsxgen.js"></script>
 <script>
-/**
- * INPUT FORMAT
- *
- * GRAPH
- * Function name: f1, f2, f3, ...
- * Function definition: -3*x*x+2
- * Complete: f1=-3*x*x+2&f2=x*x
- */
-var params = JSXGen.getParams();
-var board = JSXGen.initBoard('box', params);
-var graphs = [];
+  /**
+   * INPUT FORMAT
+   *
+   * CURVE
+   * Function name: f1, f2, f3, ...
+   * Function definition: -3*x*x+2
+   * Complete: f1=-3*x*x+2&f2=x*x
+   */
+  var params = JSXGen.getParams();
+  var board = JSXGen.initBoard('box', params);
+  var curves = [];
 
-params.forEach(function(param) {
-  // parse function graphs
-  if (param.name.match(/^f\d+$/))
-  {
-    graphs.push(new JSXGen.elements.Graph(param.name, param.value));
-  }
-});
+  params.forEach(function(param) {
+    // parse function graphs
+    if (param.key.match(/^f\d+$/)) {
+      curves.push(new JSXGen.elements.Graph(param.key, param.value));
+    }
+  });
 
-graphs.forEach(function(element) {
-  element.generate();
-});
-
+  curves.forEach(function(element) {
+    element.generate();
+  });
 </script>
 </body>
 </html>
