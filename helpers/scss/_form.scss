@@ -1,0 +1,11 @@
+input[type="text"] {
+  padding: .2rem;
+  margin: .1rem 0;
+
+  &.error {
+    outline: 0 none;
+    border: 2px solid #E88484;
+    background-color: #FFBABA;
+    color: #D8000C;
+  }
+}

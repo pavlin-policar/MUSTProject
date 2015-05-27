@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+// enables the sticky footer, just make sure to encase entire webpage with this container
+.wrapper {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 4rem;
+  background-image: url('../img/basic_bg.png');
+}
+
+.container {
+  background-color: #fff;
+  @include box-shadow(0 3px 3px #ebebeb);
+  padding: 1rem;
+}
+
+.separator-horizontal {
+  margin: .5rem 0;
+  width: 100%;
+  border-top: 1px dotted $light_grey;
+}

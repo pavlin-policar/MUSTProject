@@ -1,0 +1,35 @@
+@import "compass/css3";
+
+@import 'variables',
+  'basic',
+  'header',
+  'navigation',
+  'footer',
+  'form';
+
+// site specific
+fieldset {
+  padding: .5rem 0;
+}
+
+#generated-url {
+  width: 100%;
+}
+
+#url-copy-trigger {
+  margin: 0;
+}
+
+.container + .container {
+  margin-top: 1rem;
+}
+
+.info {
+  color: $info-msg-color;
+  font-size: .8rem;
+}
+
+span.error {
+  color: $error-msg-color;
+  font-size: .8rem;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style/foundation.min.css">
+  <link rel="stylesheet" type="text/css" href="style/main.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="row">
+        <div class="small-12 columns"><h1>Hiperbola</h1><h2>&nbsp;&raquo;&nbsp;Polygon Generator</h2></div>
+      </div>
+    </header>
+    <div class="row">
+      <div class="large-8 small-12 columns">
+        <div class="panel container">
+          <iframe src="" frameborder="0" width="100%" height="500" id="iframe-display" seamless></iframe>
+          <div class="row">
+            <div class="small-12 columns"><input type="text" id="generated-url" readonly></div>
+          </div>
+        </div>
+      </div>
+      <div class="large-4 small-12 columns">
+        <div class="panel container">
+          <fieldset>
+            <legend>Grid options</legend>
+            <div class="small-12 columns">
+              <input type="checkbox" name="cbx-show-grid" id="cbx-show-grid" checked="true"><label for="cbx-show-grid">Show grid</label>
+            </div>
+            <div class="small-12 columns">
+              <input type="checkbox" name="cbx-show-grid" id="cbx-show-coords" checked="true"><label for="cbx-show-coords">Show coordinates</label>
+            </div>
+            <div class="small-12 columns"><div class="separator-horizontal"></div></div>
+            <div class="large-6 small-3 columns">
+              <label for="min-x">Min X:</label>&nbsp;<input type="text" name="min-x" id="min-x" size="1">
+            </div>
+            <div class="large-6 small-3 columns">
+              <label for="max-x">Max X:</label>&nbsp;<input type="text" name="max-x" id="max-x" size="1">
+            </div>
+            <div class="large-6 small-3 columns">
+              <label for="min-y">Min Y:</label>&nbsp;<input type="text" name="min-y" id="min-y" size="1">
+            </div>
+            <div class="large-6 small-3 columns">
+              <label for="max-y">Max Y:</label>&nbsp;<input type="text" name="max-y" id="max-y" size="1">
+            </div>
+            <div class="small-12 columns"><span id="grid-error-msg" class="error"></span></div>
+          </fieldset>
+        </div>
+        <div class="panel container">
+          <fieldset>
+            <legend>Points</legend>
+            <div class="small-12 columns"><span id="points-msg" class="info">No points have yet been created.</span></div>
+            <div id="point-list"></div>
+            <div class="small-12 columns"><div class="separator-horizontal"></div></div>
+            <div class="small-12 columns"><input type="text" size="1" placeholder="X" id="point-x-value">&nbsp;<input type="text" size="1" placeholder="Y" id="point-y-value">&nbsp;<button id="add-point-trigger">Add point</button></div>
+            <div class="small-12 columns"><span id="points-error-msg" class="error"></span></div>
+          </fieldset>
+        </div>
+        <div class="panel container">
+          <fieldset>
+            <legend>Polygons</legend>
+            <div class="small-12 columns"><span id="polygon-msg" class="info">No polygons have yet been created.</span></div>
+            <div id = "polygon-list"></div>
+            <div class="small-12 columns"><div class="separator-horizontal"></div></div>
+            <div class="small-12 columns"><input type="text" placeholder="T1, T2, T3, ..." id="polygon-points">&nbsp;<button id="add-polygon-trigger">Add polygon</button></div>
+            <div class="small-12 columns"><span id="polygons-error-msg" class="error"></span></div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="row">
+        <div class="small-12 columns">&copy;2015 Hiperbola</div>
+      </div>
+    </footer>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="script/urlGenerator.js"></script>
+</html>

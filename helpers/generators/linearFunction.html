@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.1/jsxgraphcore.js"></script>
+  <link rel="stylesheet" href="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css">
+  <style>
+  * { box-sizing: border-box; -moz-box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { padding: 0; margin: 0; }
+  #box { margin: 0 auto; width: 100%; height: 100%; }
+  .jxgbox { border: none; }
+  </style>
+</head>
+<body>
+  <div id="box" class="jxgbox"></div>
+
+  <script>
+  var board = JXG.JSXGraph.initBoard('box', {
+    boundingBox: [-6, 6, 6, -6],
+    axis: true,
+    grid: true,
+    showCopyright: false
+  });
+
+  var k = board.create('slider', [[-2, -5], [2, -5], [-10, 1, 10]], { name: 'k' });
+  var n = board.create('slider', [[-2, -5.5], [2, -5.5], [-6, 0, 6]], { name: 'n' });
+
+  var f = board.create('functiongraph', [
+    function (x) {
+      return k.Value() * x + n.Value();
+    }, -6, 6 ]);
+
+  </script>
+</body>
+</html>
