@@ -3,129 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.1/jsxgraphcore.js"></script>
-  <link rel="stylesheet" href="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css" />
+  <link rel="stylesheet" href="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css"/>
   <style>
-  * { box-sizing: border-box; -moz-box-sizing: border-box; }
-  html, body { height: 100%; }
-  body { padding: 0; margin: 0; }
-  #box { margin: 0 auto; width: 100%; height: 100%; }
-  .jxgbox { border: none; }
+    * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    #box {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+    .jxgbox {
+      border: none;
+    }
   </style>
 </head>
 <body>
 <div id="box" class="jxgbox"></div>
-<script src="jsxgen.js"></script>
+<script src="../script/jsxgen.js"></script>
 <script>
-/**
- * INPUT FORMAT
- *
- * GRAPH
- * Function name: f1, f2, f3, ...
- * Function definition: -3*x*x+2
- * Complete: f1=-3*x*x+2&f2=x*x
- */
+  /**
+   * INPUT FORMAT
+   *
+   * GRAPH
+   * Function name: f1, f2, f3, ...
+   * Function definition: -3*x*x+2
+   * Complete: f1=-3*x*x+2&f2=x*x
+   */
 
-var params = JSXGen.getParams();
-var board = JSXGen.initBoard('box', params);
-var graphs = [];
+  var params = JSXGen.getParams();
+  var board = JSXGen.initBoard('box', params);
+  var graphs = [];
 
-// animation options
-var minX = board.attr.boundingbox[0],
-    maxX = board.attr.boundingbox[2],
-    X = minX,
-    e = 0.01,
-    interval = 75;
+  // animation options
+  var minX = board.attr.boundingbox[0],
+          maxX = board.attr.boundingbox[2],
+          X = minX,
+          e = 0.01,
+          interval = 75;
 
-params.forEach(function(param) {
-  // parse function graphs
-  if (param.name.match(/^f\d+$/))
-    graphs.push(new JSXGen.elements.Graph(param.name, param.value));
-  else if (param.name == "interval")
-    interval = param.value;
-});
+  params.forEach(function (param) {
+    // parse function graphs
+    if (param.key.match(/^f\d+$/))
+      graphs.push(new JSXGen.elements.Graph(param.name, param.value));
+    else if (param.key == "interval")
+      interval = param.value;
+  });
 
 
-var running = false, objInterval = null, points = [], functions = [];
-// transform text function into actual function
-graphs.forEach(function(graph) {
-  functions.push(new Function("x", "return " + graph.definition));
-});
+  var running = false, objInterval = null, points = [], functions = [];
+  // transform text function into actual function
+  graphs.forEach(function (graph) {
+    functions.push(new Function("x", "return " + graph.definition));
+  });
 
-var createPoints = function() {
-  var createPoint = function(f) {
-    // get different colors from JSXGen
-    var color = JSXGen.elements._colors[0] || 'blue';
-    JSXGen.elements._colors.shift();
-    return board.create('point', [minX, f(minX)], {
-      trace: true,
-      size: 1,
-      showInfobox: false,
-      name: '',
-      color: color
+  var createPoints = function () {
+    var createPoint = function (f) {
+      // get different colors from JSXGen
+      var color = JSXGen.elements.colors[0] || 'blue';
+      JSXGen.elements.colors.shift();
+      return board.create('point', [minX, f(minX)], {
+        trace: true,
+        size: 1,
+        showInfobox: false,
+        name: '',
+        color: color
+      });
+    };
+
+    functions.forEach(function (f) {
+      points.push(createPoint(f));
     });
   };
 
-  functions.forEach(function(f) {
-    points.push(createPoint(f));
-  });
-};
+  var movePoints = function () {
+    if (!running || X > maxX) return;
+    for (var i = 0; i < functions.length; i++)
+      points[i].moveTo([X += e, functions[i](X)], 0);
+  };
 
-var movePoints = function() {
-  if (!running || X > maxX) return;
-  for (var i = 0; i < functions.length; i++)
-    points[i].moveTo([X += e, functions[i](X)], 0);
-};
+  // Animation controls
+  var start = function () {
+    // prevent click spamming
+    if (running) return;
+    createPoints();
 
-// Animation controls
-var start = function() {
-  // prevent click spamming
-  if (running) return;
-  createPoints();
+    running = true;
+    objInterval = setInterval(movePoints, interval);
+  };
 
-  running = true;
-  objInterval = setInterval(movePoints, interval);
-};
+  var pause = function () {
+    running = false;
+    clearInterval(objInterval);
+  };
 
-var pause = function() {
-  running = false;
-  clearInterval(objInterval);
-};
+  var reset = function () {
+    if (points.length === 0) return;
 
-var reset = function() {
-  if (points.length === 0) return;
+    pause();
+    X = minX;
+    points.forEach(function (point) {
+      board.removeObject(point);
+      point.clearTrace();
+    });
+    points = [];
+  };
 
-  pause();
-  X = minX;
-  points.forEach(function(point) {
-    board.removeObject(point);
-    point.clearTrace();
-  });
-  points = [];
-};
+  // DOM control elements
+  var container = document.createElement('span');
+  container.id = 'animation-trigger-container';
+  container.style.cssText = 'position:absolute;bottom:1rem;left:1rem';
+  box.appendChild(container);
+  var btnStart = document.createElement('button'), btnPause = btnStart.cloneNode(), btnReset = btnStart.cloneNode();
 
-// DOM control elements
-var container = document.createElement('span');
-container.id = 'animation-trigger-container';
-container.style.cssText = 'position:absolute;bottom:1rem;left:1rem';
-box.appendChild(container);
-var btnStart = document.createElement('button'), btnPause = btnStart.cloneNode(), btnReset = btnStart.cloneNode();
+  btnStart.id = 'animation-trigger-start';
+  btnStart.appendChild(document.createTextNode('Start'));
+  btnStart.addEventListener('click', start);
 
-btnStart.id = 'animation-trigger-start';
-btnStart.appendChild(document.createTextNode('Start'));
-btnStart.addEventListener('click', start);
+  btnPause.id = 'animation-trigger-pause';
+  btnPause.appendChild(document.createTextNode('Pause'));
+  btnPause.addEventListener('click', pause);
 
-btnPause.id = 'animation-trigger-pause';
-btnPause.appendChild(document.createTextNode('Pause'));
-btnPause.addEventListener('click', pause);
+  btnReset.id = 'animation-trigger-reset';
+  btnReset.appendChild(document.createTextNode('Reset'));
+  btnReset.addEventListener('click', reset);
 
-btnReset.id = 'animation-trigger-reset';
-btnReset.appendChild(document.createTextNode('Reset'));
-btnReset.addEventListener('click', reset);
-
-container.appendChild(btnStart);
-container.appendChild(btnPause);
-container.appendChild(btnReset);
-
+  container.appendChild(btnStart);
+  container.appendChild(btnPause);
+  container.appendChild(btnReset);
 </script>
 </body>
 </html>

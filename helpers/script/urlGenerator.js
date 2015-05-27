@@ -18,7 +18,7 @@ var pointCounter = 1, polygonCounter = 1, curveCounter = 1, pointInputFieldCount
 
 var sanitize = function (str) {
   return str.replace(/[\s\.\-\_\(\)\[\]\{\}]/g, '').replace(/ /g, '').toLowerCase();
-}
+};
 
 /**
  * Hide or show element if given array is empty
@@ -103,7 +103,7 @@ var displayErrors = function () {
     $('#function-points').removeClass('error');
     $('#function-error-msg').text('');
   }
-}
+};
 
 /**
  * Generate and refresh url to show
@@ -166,7 +166,7 @@ var refreshUrl = function () {
   $('#generated-url').val(nurl);
   $('#iframe-display').attr('src', nurl);
   displayErrors();
-}
+};
 
 var deleteElement = function (e) {
   var matches = e.target.id.match(/(point|polygon|function)-delete-(\d+)$/);
@@ -205,7 +205,7 @@ var deleteElement = function (e) {
       refreshUrl();
       break;
   }
-}
+};
 
 /**
  * Create point object
@@ -238,7 +238,7 @@ Point.prototype.convertToUrl = function () {
 };
 Point.prototype.toString = function () {
   return this.name;
-}
+};
 Point.prototype.createDomElement = function () {
   var element = $('<div/>', {
     'id': 'point-' + pointInputFieldCounter
@@ -333,13 +333,13 @@ var Curve = function (definition) {
     throw new Error('Empty definition given');
   }
   return this;
-}
+};
 Curve.prototype.convertToUrl = function () {
   return this.name + "=" + this.definition;
-}
+};
 Curve.prototype.toString = function () {
   return this.name;
-}
+};
 Curve.prototype.createDomElement = function () {
   var element = $('<div/>', {
     'id': 'function-' + curveInputFieldCounter
@@ -369,7 +369,7 @@ $('#add-point-trigger').click(function () {
     pointXVal.val(''); pointYVal.val('');
     refreshEmptyMessage(points, $('#points-msg'));
   } catch (e) { }
-  refreshUrl();;
+  refreshUrl();
 });
 $('#add-polygon-trigger').click(function () {
   var polyPoints = $('#polygon-points');

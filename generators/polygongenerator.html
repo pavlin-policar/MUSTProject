@@ -14,53 +14,51 @@
 </head>
 <body>
 <div id="box" class="jxgbox"></div>
-<script src="jsxgen_old.js"></script>
+<script src="../script/jsxgen.js"></script>
 <script>
-/**
- * INPUT FORMAT
- *
- * POINT
- * Point name: t1, t2, t3, ...
- * Point data: (x, y) or [x, y]
- * Complete: t1=[1,2]&t2=(2,3)
- *
- * POLYGON
- * Polygon name: p1, p2, p3, ...
- * Polygon data: (t1, t2, t3, ...) or [t1, t2, t3, ...]
- * Complete: p1=[t1,t2,t3]&p2=(t1,t2,t3)
- */
-var params = JSXGen.getParams();
-var board = JSXGen.initBoard('box', params);
-var points = [], polygons = [];
+  /**
+   * INPUT FORMAT
+   *
+   * POINT
+   * Point name: t1, t2, t3, ...
+   * Point data: (x, y) or [x, y]
+   * Complete: t1=[1,2]&t2=(2,3)
+   *
+   * POLYGON
+   * Polygon name: p1, p2, p3, ...
+   * Polygon data: (t1, t2, t3, ...) or [t1, t2, t3, ...]
+   * Complete: p1=[t1,t2,t3]&p2=(t1,t2,t3)
+   */
+  var params = JSXGen.getParams();
+  var board = JSXGen.initBoard('box', params);
+  var points = [], polygons = [];
 
-params.forEach(function(param) {
-  // parse points
-  if (param.name.match(/^t\d+$/)) {
-    var data = stripBrackets(param.value);
-    points.push(new JSXGen.elements.Point(param.name, data.split(',')));
-  }
-
-  // parse polygons
-  else if (param.name.match(/^p\d+$/)) {
-    var data = stripBrackets(param.value);
-    var data = data.split(',');
-    var pts = [];
-    for (var i = 0; i < data.length; i++) {
-      for (var j = 0; j < points.length; j++) {
-        if (data[i] == points[j].name) {
-          pts.push(points[j]);
-        }
-      }
+  params.forEach(function(param) {
+    // parse points
+    if (param.key.match(/^t\d+$/)) {
+      var data = stripBrackets(param.value);
+      points.push(new JSXGen.elements.Point(param.key, data.split(',')));
     }
 
-    polygons.push(new JSXGen.elements.Polygon(param.name, pts));
-  }
-});
+    // parse polygons
+    else if (param.key.match(/^p\d+$/)) {
+      var data = stripBrackets(param.value);
+      var data = data.split(',');
+      var pts = [];
+      for (var i = 0; i < data.length; i++) {
+        for (var j = 0; j < points.length; j++) {
+          if (data[i] == points[j].name) {
+            pts.push(points[j]);
+          }
+        }
+      }
+      polygons.push(new JSXGen.elements.Polygon(param.key, pts));
+    }
+  });
 
-points.concat(polygons).forEach(function(element) {
-  element.generate();
-});
-
+  points.concat(polygons).forEach(function(element) {
+    element.generate();
+  });
 </script>
 </body>
 </html>
